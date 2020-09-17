@@ -1,15 +1,5 @@
 var data = [
   {
-    name: "Cox's Bazar",
-    info:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias facere reiciendis soluta voluptate a minima ratione ut doloremque fuga mollitia.",
-    detailInfo:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel et impedit molestiae laborum tempore suscipit in fugit ex, iure odio saepe cumque quibusdam assumenda odit velit quisquam culpa amet illo placeat itaque, est unde recusandae sed? Fugit totam quas maiores.",
-    img: "https://i.ibb.co/1bFg2yH/Rectangle-1.png",
-    id: 1,
-    category: "destination",
-  },
-  {
     name: "Sreemangal",
     info:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias facere reiciendis soluta voluptate a minima ratione ut doloremque fuga mollitia.",

@@ -5,10 +5,22 @@
 }
 .header input {
   font-size: 14px;
+  height: 44px;
+  padding-left: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 370px;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid white;
+}
+::placeholder {
+  color: #fff;
 }
 .header a {
-  color: #000;
+  color: #fff;
 }
 .header img {
   height: 40px;
+  filter: brightness(600%);
 }
