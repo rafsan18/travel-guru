@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
 import Home from "./components/Home/Home";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
-import Header from "./components/Header/Header";
 import NoMatch from "./components/NoMatch/NoMatch";
+import DestinationDetails from "./components/DestinationDetails/DestinationDetails";
 
 function App() {
     return (
@@ -15,6 +15,9 @@ function App() {
                 </Route>
                 <Route path="/home">
                     <Home />
+                </Route>
+                <Route path="/destination/:destinationName">
+                    <DestinationDetails />
                 </Route>
                 <Route path="/login">
                     <Login />

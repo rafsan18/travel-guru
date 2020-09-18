@@ -1,5 +1,6 @@
-.home-container {
-    background-size: cover;
-    background-repeat: 100%;
+.hero-element {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url("https://i.ibb.co/1bFg2yH/Rectangle-1.png") 50% / cover no-repeat
+            fixed;
     height: 100vh;
 }
