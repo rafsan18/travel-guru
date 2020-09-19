@@ -79,6 +79,7 @@ const Login = () => {
     });
 
     initializeLoginFramework();
+
     const googleSignIn = () => {
         handleGoogleSignIn().then((res) => {
             setUser(res);
@@ -87,6 +88,21 @@ const Login = () => {
         });
     };
 
+    const handleFbSignIn = () => {
+        const fbProvider = new firebase.auth.FacebookAuthProvider();
+        firebase
+            .auth()
+            .signInWithPopup(fbProvider)
+            .then((res) => {
+                console.log(res.user);
+            })
+            .catch(function (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.email;
+                const credential = error.credential;
+            });
+    };
     const classes = useStyles();
     return (
         <div>
@@ -133,7 +149,10 @@ const Login = () => {
                     <div className={classes.dash}></div>
                 </div>
 
-                <button className={classes.thirdPartyLoginBtn}>
+                <button
+                    className={classes.thirdPartyLoginBtn}
+                    onClick={handleFbSignIn}
+                >
                     <img src={fbLogo} alt="" className={classes.logo} />
                     Continue with Facebook
                 </button>
