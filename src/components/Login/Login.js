@@ -11,6 +11,7 @@ import firebaseConfig from "./firebase.config";
 import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
+import { handleGoogleSignIn, initializeLoginFramework } from "./loginManager";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,28 +77,14 @@ const Login = () => {
         isSignedIn: false,
         name: "",
     });
-    if (firebase.apps.length === 0) {
-        firebase.initializeApp(firebaseConfig);
-    }
 
-    const handleGoogleSignIn = () => {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase
-            .auth()
-            .signInWithPopup(provider)
-            .then((res) => {
-                const { displayName } = res.user;
-                const signedInUser = {
-                    isSignedIn: true,
-                    name: displayName,
-                };
-                setUser(signedInUser);
-                setLoggedInUser(signedInUser);
-                history.replace(from);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    initializeLoginFramework();
+    const googleSignIn = () => {
+        handleGoogleSignIn().then((res) => {
+            setUser(res);
+            setLoggedInUser(res);
+            history.replace(from);
+        });
     };
 
     const classes = useStyles();
@@ -152,7 +139,7 @@ const Login = () => {
                 </button>
                 <br />
                 <button
-                    onClick={handleGoogleSignIn}
+                    onClick={googleSignIn}
                     className={classes.thirdPartyLoginBtn}
                 >
                     <img src={googleLogo} alt="" className={classes.logo} />
