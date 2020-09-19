@@ -11,7 +11,11 @@ import firebaseConfig from "./firebase.config";
 import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
-import { handleGoogleSignIn, initializeLoginFramework } from "./loginManager";
+import {
+    handleFbSignIn,
+    handleGoogleSignIn,
+    initializeLoginFramework,
+} from "./loginManager";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -88,21 +92,15 @@ const Login = () => {
         });
     };
 
-    const handleFbSignIn = () => {
-        const fbProvider = new firebase.auth.FacebookAuthProvider();
-        firebase
-            .auth()
-            .signInWithPopup(fbProvider)
-            .then((res) => {
-                console.log(res.user);
-            })
-            .catch(function (error) {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                const email = error.email;
-                const credential = error.credential;
-            });
+    const fbSignIn = () => {
+        handleFbSignIn().then((res) => {
+            setUser(res);
+            setLoggedInUser(res);
+            history.replace(from);
+            console.log(res);
+        });
     };
+
     const classes = useStyles();
     return (
         <div>
@@ -151,7 +149,7 @@ const Login = () => {
 
                 <button
                     className={classes.thirdPartyLoginBtn}
-                    onClick={handleFbSignIn}
+                    onClick={fbSignIn}
                 >
                     <img src={fbLogo} alt="" className={classes.logo} />
                     Continue with Facebook

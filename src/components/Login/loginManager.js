@@ -9,7 +9,7 @@ export const initializeLoginFramework = () => {
 };
 
 export const handleGoogleSignIn = () => {
-    var provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     return firebase
         .auth()
         .signInWithPopup(provider)
@@ -26,5 +26,26 @@ export const handleGoogleSignIn = () => {
         })
         .catch((error) => {
             console.log(error);
+        });
+};
+
+export const handleFbSignIn = () => {
+    const fbProvider = new firebase.auth.FacebookAuthProvider();
+    return firebase
+        .auth()
+        .signInWithPopup(fbProvider)
+        .then((res) => {
+            const { displayName } = res.user;
+            const signedInUser = {
+                isSignedIn: true,
+                name: displayName,
+            };
+            return signedInUser;
+        })
+        .catch(function (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            const credential = error.credential;
         });
 };
