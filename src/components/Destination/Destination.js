@@ -5,7 +5,6 @@ import "./Destination.css";
 const Destination = (props) => {
     const { name, img } = props.destination;
 
-    console.log(name, img);
     return (
         <div className="col-md-4 col-sm-4 ">
             <Link to={`/destination/${name}`}>

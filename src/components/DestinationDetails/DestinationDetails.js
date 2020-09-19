@@ -13,7 +13,7 @@ const DestinationDetails = () => {
     );
     const [destinationDetail, setDestinationDetail] = useState(destinationData);
     const { name, detailInfo } = destinationDetail;
-    console.log(name, detailInfo);
+
     return (
         <div className="hero-element ">
             <Header></Header>

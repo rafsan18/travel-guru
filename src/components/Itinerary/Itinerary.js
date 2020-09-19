@@ -1,14 +1,19 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 const Itinerary = (props) => {
+    const history = useHistory();
+    const handleBooking = () => {
+        history.push("/hotel");
+    };
     return (
-        <form>
+        <div>
             <div className="form-group">
                 <label>Origin</label>
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Current Location..."
+                    defaultValue="Dhaka"
                 />
             </div>
             <div className="form-group">
@@ -16,7 +21,7 @@ const Itinerary = (props) => {
                 <input
                     type="text"
                     className="form-control"
-                    value={props.name}
+                    defaultValue={props.name}
                 />
             </div>
             <div className="form-row ">
@@ -31,10 +36,14 @@ const Itinerary = (props) => {
                 </div>
             </div>
 
-            <button type="submit" className="btn btn-warning  btn-block">
+            <button
+                type="submit"
+                className="btn btn-warning  btn-block"
+                onClick={handleBooking}
+            >
                 Start Booking
             </button>
-        </form>
+        </div>
     );
 };
 

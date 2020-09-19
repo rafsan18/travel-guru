@@ -11,7 +11,7 @@ const Home = () => {
         (destination) => destination.category === "destination"
     );
     const [destinations, setDestinations] = useState(destinationData);
-    console.log(destinations);
+
     return (
         <div className="hero-element container-fluid">
             <Header></Header>

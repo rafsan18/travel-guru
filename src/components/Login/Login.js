@@ -1,15 +1,16 @@
-import React from "react";
-import Header from "../Header/Header";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import SecondaryHeader from "../Header/SecondaryHeader";
 import fbLogo from "../../image/Icon/fb.png";
 import googleLogo from "../../image/Icon/google.png";
 
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "./firebase.config";
+import { UserContext } from "../../App";
+import { useHistory, useLocation } from "react-router-dom";
+import Header from "../Header/Header";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         margin: "0 auto",
         marginTop: "20px",
-        padding: "40px 50px",
+        padding: "20px 30px 10px 20px",
+        border: "1px solid lightgray",
         borderRadius: "5px",
     },
 
@@ -40,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        width: "460px",
+        margin: "10px auto",
     },
     dash: {
         height: "1px",
@@ -53,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "40px",
     },
     thirdPartyLoginBtn: {
-        width: "80%",
+        width: "460px",
         borderRadius: "20px",
         display: "flex",
         alignItems: "center",
@@ -64,6 +68,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const history = useHistory();
+    const location = useLocation();
+    const { from } = location.state || { from: { pathname: "/" } };
+    const [user, setUser] = useState({
+        isSignedIn: false,
+        name: "",
+    });
     if (firebase.apps.length === 0) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -73,30 +85,25 @@ const Login = () => {
         firebase
             .auth()
             .signInWithPopup(provider)
-            .then(function (result) {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                var token = result.credential.accessToken;
-                // The signed-in user info.
-                var user = result.user;
-                // ...
-                console.log(user);
+            .then((res) => {
+                const { displayName } = res.user;
+                const signedInUser = {
+                    isSignedIn: true,
+                    name: displayName,
+                };
+                setUser(signedInUser);
+                setLoggedInUser(signedInUser);
+                history.replace(from);
             })
-            .catch(function (error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                // The email of the user's account used.
-                var email = error.email;
-                // The firebase.auth.AuthCredential type that was used.
-                var credential = error.credential;
-                // ...
+            .catch((error) => {
+                console.log(error);
             });
     };
 
     const classes = useStyles();
     return (
-        <div className="login-pg ">
-            <SecondaryHeader></SecondaryHeader>
+        <div>
+            <Header></Header>
             <div className="container">
                 <div className={classes.container}>
                     <form
@@ -105,24 +112,19 @@ const Login = () => {
                         autoComplete="off"
                     >
                         <h5>Create an account</h5>
-                        <TextField id="standard-basic" label="First Name" />
+                        <TextField label="First Name" />
                         <br />
-                        <TextField id="standard-basic" label="Last Name" />
+                        <TextField label="Last Name" />
                         <br />
-                        <TextField
-                            id="standard-basic"
-                            label="Username or Email"
-                        />
+                        <TextField label="Username or Email" />
                         <br />
                         <TextField
-                            id="standard-password-input"
                             label="Password"
                             type="password"
                             autoComplete="current-password"
                         />
                         <br />
                         <TextField
-                            id="standard-password-input"
                             label="Confirm Password"
                             type="password"
                             autoComplete="current-password"
@@ -137,25 +139,25 @@ const Login = () => {
                             <small>Already have an account? Login</small>
                         </div>
                     </form>
-                    <div className={classes.dashContainer}>
-                        <div className={classes.dash}></div>
-                        <div>Or</div>
-                        <div className={classes.dash}></div>
-                    </div>
-
-                    <button className={classes.thirdPartyLoginBtn}>
-                        <img src={fbLogo} alt="" className={classes.logo} />
-                        Continue with Facebook
-                    </button>
-                    <br />
-                    <button
-                        onClick={handleGoogleSignIn}
-                        className={classes.thirdPartyLoginBtn}
-                    >
-                        <img src={googleLogo} alt="" className={classes.logo} />
-                        Continue with Google
-                    </button>
                 </div>
+                <div className={classes.dashContainer}>
+                    <div className={classes.dash}></div>
+                    <div>Or</div>
+                    <div className={classes.dash}></div>
+                </div>
+
+                <button className={classes.thirdPartyLoginBtn}>
+                    <img src={fbLogo} alt="" className={classes.logo} />
+                    Continue with Facebook
+                </button>
+                <br />
+                <button
+                    onClick={handleGoogleSignIn}
+                    className={classes.thirdPartyLoginBtn}
+                >
+                    <img src={googleLogo} alt="" className={classes.logo} />
+                    Continue with Google
+                </button>
             </div>
         </div>
     );

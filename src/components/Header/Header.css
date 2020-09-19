@@ -20,7 +20,14 @@
 .header a {
     color: #fff;
 }
-.header img {
+.light-img {
     height: 40px;
     filter: brightness(600%);
+}
+.dark-img {
+    height: 40px;
+}
+
+.visibility {
+    visibility: hidden;
 }
