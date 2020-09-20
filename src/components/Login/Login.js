@@ -16,6 +16,7 @@ import {
     handleGoogleSignIn,
     initializeLoginFramework,
 } from "./loginManager";
+import { CloseButton } from "react-bootstrap";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         margin: "auto",
-        backgroundColor: "#fff",
         border: "1px solid lightgray",
     },
 }));
@@ -80,7 +80,14 @@ const Login = () => {
     const [user, setUser] = useState({
         isSignedIn: false,
         name: "",
+        password: "",
+        email: "",
+        confirmPassword: "",
+        firstName: "",
+        lastName: "",
+        error: "",
     });
+    const [newUser, setNewUser] = useState(false);
 
     initializeLoginFramework();
 
@@ -97,11 +104,50 @@ const Login = () => {
             setUser(res);
             setLoggedInUser(res);
             history.replace(from);
-            console.log(res);
         });
     };
 
+    const handleBlur = (e) => {
+        let isFieldValid = true;
+        if (e.target.name === "email") {
+            isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
+        }
+        if (e.target.name === "password") {
+            const isPasswordValid = e.target.value.length >= 6;
+            const containNumber = /\d+/.test(e.target.value);
+            isFieldValid = isPasswordValid && containNumber;
+        }
+        if (e.target.name === "confirmPassword") {
+            isFieldValid = e.target.value === user.password;
+        }
+        if (isFieldValid) {
+            const newUserInfo = { ...user };
+            newUserInfo[e.target.name] = e.target.value;
+            setUser(newUserInfo);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        if (user.email && user.password) {
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(user.email, user.password)
+                .then((res) => {
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = "";
+                    setUser(newUserInfo);
+                })
+                .catch((error) => {
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = error.message;
+                    setUser(newUserInfo);
+                });
+        }
+        e.preventDefault();
+    };
+
     const classes = useStyles();
+
     return (
         <div>
             <Header></Header>
@@ -111,33 +157,84 @@ const Login = () => {
                         className={classes.root}
                         noValidate
                         autoComplete="off"
+                        onSubmit={handleSubmit}
                     >
-                        <h5>Create an account</h5>
-                        <TextField label="First Name" />
+                        {newUser ? (
+                            <h5>Create an account</h5>
+                        ) : (
+                            <h5>Sign In</h5>
+                        )}
+
+                        {newUser && (
+                            <TextField
+                                label="First Name"
+                                required
+                                onBlur={handleBlur}
+                                name="firstName"
+                            />
+                        )}
                         <br />
-                        <TextField label="Last Name" />
+                        {newUser && (
+                            <TextField
+                                label="Last Name"
+                                required
+                                onBlur={handleBlur}
+                                name="lastName"
+                            />
+                        )}
                         <br />
-                        <TextField label="Username or Email" />
+                        <TextField
+                            label="Username or Email"
+                            required
+                            onBlur={handleBlur}
+                            name="email"
+                        />
+
                         <br />
                         <TextField
                             label="Password"
                             type="password"
                             autoComplete="current-password"
+                            required
+                            onBlur={handleBlur}
+                            name="password"
                         />
                         <br />
-                        <TextField
-                            label="Confirm Password"
-                            type="password"
-                            autoComplete="current-password"
-                        />
+                        {newUser && (
+                            <TextField
+                                label="Confirm Password"
+                                type="password"
+                                autoComplete="current-password"
+                                required
+                                onBlur={handleBlur}
+                                name="confirmPassword"
+                            />
+                        )}
                         <br />
-                        <input
-                            className={classes.submit}
-                            type="submit"
-                            value="Create an account"
-                        />
+                        {newUser ? (
+                            <input
+                                className={classes.submit}
+                                type="submit"
+                                value="Create an account"
+                            />
+                        ) : (
+                            <input
+                                className={classes.submit}
+                                type="submit"
+                                value="Sign in"
+                            />
+                        )}
+                        <small style={{ color: "red" }}>{user.error}</small>
                         <div className={classes.small}>
-                            <small>Already have an account? Login</small>
+                            <small>
+                                Already have an account?{" "}
+                                <span
+                                    className="toggle-field"
+                                    onClick={() => setNewUser(!newUser)}
+                                >
+                                    {newUser ? "Login" : "Create an account"}
+                                </span>
+                            </small>
                         </div>
                     </form>
                 </div>
@@ -148,7 +245,7 @@ const Login = () => {
                 </div>
 
                 <button
-                    className={classes.thirdPartyLoginBtn}
+                    className={`${classes.thirdPartyLoginBtn} btn btn-light`}
                     onClick={fbSignIn}
                 >
                     <img src={fbLogo} alt="" className={classes.logo} />
@@ -157,7 +254,7 @@ const Login = () => {
                 <br />
                 <button
                     onClick={googleSignIn}
-                    className={classes.thirdPartyLoginBtn}
+                    className={`${classes.thirdPartyLoginBtn} btn btn-light`}
                 >
                     <img src={googleLogo} alt="" className={classes.logo} />
                     Continue with Google

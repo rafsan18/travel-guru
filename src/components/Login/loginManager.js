@@ -14,10 +14,11 @@ export const handleGoogleSignIn = () => {
         .auth()
         .signInWithPopup(provider)
         .then((res) => {
-            const { displayName } = res.user;
+            const { displayName, email } = res.user;
             const signedInUser = {
                 isSignedIn: true,
                 name: displayName,
+                email: email,
             };
             return signedInUser;
             // setUser(signedInUser);
@@ -35,10 +36,11 @@ export const handleFbSignIn = () => {
         .auth()
         .signInWithPopup(fbProvider)
         .then((res) => {
-            const { displayName } = res.user;
+            const { displayName, email } = res.user;
             const signedInUser = {
                 isSignedIn: true,
                 name: displayName,
+                email: email,
             };
             return signedInUser;
         })
