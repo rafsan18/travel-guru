@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { UserContext } from "../../App";
 import logo from "../../image/Logo.png";
 import "./Header.css";
@@ -7,6 +7,7 @@ import { signOutFromAccount } from "../Login/loginManager";
 
 const Header = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const { destinationName } = useParams();
 
     const handleSignOut = () => {
         signOutFromAccount().then((res) => {
@@ -18,8 +19,8 @@ const Header = () => {
     const location = useLocation();
 
     const headerStyleChange =
-        location.pathname === "/login" || location.pathname === "/hotel";
-    console.log(headerStyleChange);
+        location.pathname === "/login" ||
+        location.pathname === `/hotel/${destinationName}`;
 
     const handleLogin = () => {
         history.push("/login");

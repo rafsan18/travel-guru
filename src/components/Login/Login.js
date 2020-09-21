@@ -4,10 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import fbLogo from "../../image/Icon/fb.png";
 import googleLogo from "../../image/Icon/google.png";
-
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import firebaseConfig from "./firebase.config";
 import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
@@ -18,7 +14,6 @@ import {
     initializeLoginFramework,
     signInWithEmailAndPassword,
 } from "./loginManager";
-import { CloseButton } from "react-bootstrap";
 
 const useStyles = makeStyles((theme) => ({
     root: {

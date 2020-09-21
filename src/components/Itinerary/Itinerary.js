@@ -1,10 +1,11 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const Itinerary = (props) => {
     const history = useHistory();
+    const { destinationName } = useParams();
     const handleBooking = () => {
-        history.push("/hotel");
+        history.push(`/hotel/${destinationName}`);
     };
     return (
         <div>
