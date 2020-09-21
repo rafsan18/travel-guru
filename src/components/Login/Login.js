@@ -12,9 +12,11 @@ import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import {
+    createUserWithEmailAndPassword,
     handleFbSignIn,
     handleGoogleSignIn,
     initializeLoginFramework,
+    signInWithEmailAndPassword,
 } from "./loginManager";
 import { CloseButton } from "react-bootstrap";
 
@@ -129,54 +131,28 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         if (newUser && user.email && user.password) {
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(user.email, user.password)
-                .then((res) => {
-                    const newUserInfo = { ...user };
-                    newUserInfo.error = "";
-                    setUser(newUserInfo);
-                    updateUserName(user.firstName, user.lastName);
-                })
-                .catch((error) => {
-                    const newUserInfo = { ...user };
-                    newUserInfo.error = error.message;
-                    setUser(newUserInfo);
-                });
+            createUserWithEmailAndPassword(
+                user.firstName,
+                user.lastName,
+                user.email,
+                user.password
+            ).then((res) => {
+                setUser(res);
+                setLoggedInUser(res);
+                history.replace(from);
+            });
         }
 
         if (!newUser && user.email && user.password) {
-            firebase
-                .auth()
-                .signInWithEmailAndPassword(user.email, user.password)
-                .then((res) => {
-                    const newUserInfo = { ...user };
-                    newUserInfo.error = "";
-                    setUser(newUserInfo);
+            signInWithEmailAndPassword(user.email, user.password).then(
+                (res) => {
+                    setUser(res);
+                    setLoggedInUser(res);
                     history.replace(from);
-                    console.log("sign in user info", res.user);
-                })
-                .catch(function (error) {
-                    const newUserInfo = { ...user };
-                    newUserInfo.error = error.message;
-                    setUser(newUserInfo);
-                });
+                }
+            );
         }
         e.preventDefault();
-    };
-
-    const updateUserName = (firstName, lastName) => {
-        const user = firebase.auth().currentUser;
-
-        user.updateProfile({
-            displayName: firstName + " " + lastName,
-        })
-            .then(function () {
-                console.log("user name updated successfully");
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     };
 
     const classes = useStyles();

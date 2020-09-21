@@ -6,23 +6,15 @@ import logo from "../../image/Logo.png";
 import "./Header.css";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import { signOutFromAccount } from "../Login/loginManager";
 
 const Header = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
     const handleSignOut = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then((res) => {
-                const signedOutUser = {
-                    isSignedIn: false,
-                    name: "",
-                    email: "",
-                };
-                setLoggedInUser(signedOutUser);
-            })
-            .catch((error) => {});
+        signOutFromAccount().then((res) => {
+            setLoggedInUser(res);
+        });
     };
 
     const history = useHistory();
