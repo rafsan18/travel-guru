@@ -8,7 +8,6 @@ const Hotel = () => {
     const { destinationName } = useParams();
     console.log(destinationName);
     const history = useHistory();
-    console.log(history);
     const hotelData = fakeData.filter(
         (hotelInfo) => hotelInfo.category === "hotelInfo"
     );

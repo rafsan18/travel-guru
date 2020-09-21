@@ -82,6 +82,7 @@ const Login = () => {
     const [user, setUser] = useState({
         isSignedIn: false,
         name: "",
+        displayName: "",
         password: "",
         email: "",
         confirmPassword: "",
@@ -139,7 +140,6 @@ const Login = () => {
             ).then((res) => {
                 setUser(res);
                 setLoggedInUser(res);
-                history.replace(from);
             });
         }
 

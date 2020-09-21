@@ -17,13 +17,13 @@ export const handleGoogleSignIn = () => {
             const { displayName, email } = res.user;
             const signedInUser = {
                 isSignedIn: true,
-                name: displayName,
+                displayName: displayName,
                 email: email,
             };
             return signedInUser;
         })
         .catch((error) => {
-            console.log(error);
+            return error.message;
         });
 };
 
@@ -36,16 +36,13 @@ export const handleFbSignIn = () => {
             const { displayName, email } = res.user;
             const signedInUser = {
                 isSignedIn: true,
-                name: displayName,
+                displayName: displayName,
                 email: email,
             };
             return signedInUser;
         })
-        .catch(function (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.email;
-            const credential = error.credential;
+        .catch((error) => {
+            return error.message;
         });
 };
 
@@ -62,6 +59,7 @@ export const createUserWithEmailAndPassword = (
             const newUserInfo = res.user;
             newUserInfo.error = "";
             updateUserName(firstName, lastName);
+            newUserInfo.isSignedIn = true;
             return newUserInfo;
         })
         .catch((error) => {
@@ -78,6 +76,7 @@ export const signInWithEmailAndPassword = (email, password) => {
         .then((res) => {
             const newUserInfo = res.user;
             newUserInfo.error = "";
+            newUserInfo.isSignedIn = true;
             return newUserInfo;
         })
         .catch(function (error) {

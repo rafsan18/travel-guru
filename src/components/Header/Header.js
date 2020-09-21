@@ -7,6 +7,7 @@ import { signOutFromAccount } from "../Login/loginManager";
 
 const Header = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    console.log(loggedInUser.displayName);
 
     const handleSignOut = () => {
         signOutFromAccount().then((res) => {
@@ -19,6 +20,7 @@ const Header = () => {
 
     const headerStyleChange =
         location.pathname === "/login" || location.pathname === "/hotel";
+
     const handleLogin = () => {
         history.push("/login");
     };
@@ -55,10 +57,19 @@ const Header = () => {
 
             {loggedInUser.isSignedIn ? (
                 <div>
-                    <span className="font-weight-bold">
-                        {loggedInUser.name}
+                    <span
+                        className={
+                            headerStyleChange
+                                ? "text-dark font-weight-bold"
+                                : "font-weight-bold"
+                        }
+                    >
+                        {loggedInUser.displayName}
                     </span>
-                    <button className="btn btn-warning" onClick={handleSignOut}>
+                    <button
+                        className="btn btn-warning ml-2"
+                        onClick={handleSignOut}
+                    >
                         Sign Out
                     </button>
                 </div>
