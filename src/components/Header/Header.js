@@ -37,21 +37,21 @@ const Header = () => {
                 type="text"
                 placeholder="Search your Destination..."
             />
-            <Link className={headerStyleChange ? "text-dark" : ""} to="./home">
+            <Link className={headerStyleChange ? "text-dark" : ""} to="/home">
                 News
             </Link>
             <Link
                 className={headerStyleChange ? "text-dark" : ""}
-                to="./destinations"
+                to="/destinations"
             >
                 Destinations
             </Link>
-            <Link className={headerStyleChange ? "text-dark" : ""} to="./blog">
-                Blog
+            <Link className={headerStyleChange ? "text-dark" : ""} to="/blog">
+                blog
             </Link>
             <Link
                 className={headerStyleChange ? "text-dark" : ""}
-                to="./contact"
+                to="/contact"
             >
                 Contact
             </Link>
