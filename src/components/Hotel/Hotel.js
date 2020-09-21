@@ -1,9 +1,14 @@
 import React from "react";
+import { useHistory, useParams } from "react-router-dom";
 import fakeData from "../../fakeData/data";
 import Header from "../Header/Header";
 import HotelDetails from "../HotelDetails/HotelDetails";
 
 const Hotel = () => {
+    const { destinationName } = useParams();
+    console.log(destinationName);
+    const history = useHistory();
+    console.log(history);
     const hotelData = fakeData.filter(
         (hotelInfo) => hotelInfo.category === "hotelInfo"
     );

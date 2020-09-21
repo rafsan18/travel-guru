@@ -1,11 +1,8 @@
-import { createGenerateClassName } from "@material-ui/core";
 import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../../App";
 import logo from "../../image/Logo.png";
 import "./Header.css";
-import * as firebase from "firebase/app";
-import "firebase/auth";
 import { signOutFromAccount } from "../Login/loginManager";
 
 const Header = () => {

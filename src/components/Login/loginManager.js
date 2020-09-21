@@ -108,10 +108,8 @@ const updateUserName = (firstName, lastName) => {
     user.updateProfile({
         displayName: firstName + " " + lastName,
     })
-        .then(function () {
-            console.log("user name updated successfully");
+        .then((res) => {
+            console.log(res);
         })
-        .catch(function (error) {
-            console.log(error);
-        });
+        .catch(function (error) {});
 };
