@@ -21,9 +21,6 @@ export const handleGoogleSignIn = () => {
                 email: email,
             };
             return signedInUser;
-            // setUser(signedInUser);
-            // setLoggedInUser(signedInUser);
-            //history.replace(from);
         })
         .catch((error) => {
             console.log(error);

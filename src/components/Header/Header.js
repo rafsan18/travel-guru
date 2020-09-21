@@ -45,7 +45,7 @@ const Header = () => {
                 type="text"
                 placeholder="Search your Destination..."
             />
-            <a className={headerStyleChange ? "text-dark" : ""} href="./news">
+            <a className={headerStyleChange ? "text-dark" : ""} href="./home">
                 News
             </a>
             <a

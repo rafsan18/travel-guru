@@ -117,7 +117,7 @@ const Login = () => {
             const containNumber = /\d+/.test(e.target.value);
             isFieldValid = isPasswordValid && containNumber;
         }
-        if (e.target.name === "confirmPassword") {
+        if (newUser && e.target.name === "confirmPassword") {
             isFieldValid = e.target.value === user.password;
         }
         if (isFieldValid) {
@@ -128,7 +128,7 @@ const Login = () => {
     };
 
     const handleSubmit = (e) => {
-        if (user.email && user.password) {
+        if (newUser && user.email && user.password) {
             firebase
                 .auth()
                 .createUserWithEmailAndPassword(user.email, user.password)
@@ -136,6 +136,7 @@ const Login = () => {
                     const newUserInfo = { ...user };
                     newUserInfo.error = "";
                     setUser(newUserInfo);
+                    updateUserName(user.firstName, user.lastName);
                 })
                 .catch((error) => {
                     const newUserInfo = { ...user };
@@ -143,7 +144,39 @@ const Login = () => {
                     setUser(newUserInfo);
                 });
         }
+
+        if (!newUser && user.email && user.password) {
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(user.email, user.password)
+                .then((res) => {
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = "";
+                    setUser(newUserInfo);
+                    history.replace(from);
+                    console.log("sign in user info", res.user);
+                })
+                .catch(function (error) {
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = error.message;
+                    setUser(newUserInfo);
+                });
+        }
         e.preventDefault();
+    };
+
+    const updateUserName = (firstName, lastName) => {
+        const user = firebase.auth().currentUser;
+
+        user.updateProfile({
+            displayName: firstName + " " + lastName,
+        })
+            .then(function () {
+                console.log("user name updated successfully");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     const classes = useStyles();
@@ -211,19 +244,13 @@ const Login = () => {
                             />
                         )}
                         <br />
-                        {newUser ? (
-                            <input
-                                className={classes.submit}
-                                type="submit"
-                                value="Create an account"
-                            />
-                        ) : (
-                            <input
-                                className={classes.submit}
-                                type="submit"
-                                value="Sign in"
-                            />
-                        )}
+
+                        <input
+                            className={classes.submit}
+                            type="submit"
+                            value={newUser ? "Create an account" : "Sign in"}
+                        />
+
                         <small style={{ color: "red" }}>{user.error}</small>
                         <div className={classes.small}>
                             <small>
