@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../../App";
 import logo from "../../image/Logo.png";
 import "./Header.css";
@@ -7,7 +7,6 @@ import { signOutFromAccount } from "../Login/loginManager";
 
 const Header = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    console.log(loggedInUser.displayName);
 
     const handleSignOut = () => {
         signOutFromAccount().then((res) => {
@@ -20,6 +19,7 @@ const Header = () => {
 
     const headerStyleChange =
         location.pathname === "/login" || location.pathname === "/hotel";
+    console.log(headerStyleChange);
 
     const handleLogin = () => {
         history.push("/login");
@@ -32,28 +32,28 @@ const Header = () => {
                 alt=""
             />
             <input
-                className={headerStyleChange ? "visibility" : ""}
+                className={headerStyleChange ? "visibility" : "search-field"}
                 type="text"
                 placeholder="Search your Destination..."
             />
-            <a className={headerStyleChange ? "text-dark" : ""} href="./home">
+            <Link className={headerStyleChange ? "text-dark" : ""} to="./home">
                 News
-            </a>
-            <a
+            </Link>
+            <Link
                 className={headerStyleChange ? "text-dark" : ""}
-                href="./destination"
+                to="./destinations"
             >
-                Destination
-            </a>
-            <a className={headerStyleChange ? "text-dark" : ""} href="./blog">
+                Destinations
+            </Link>
+            <Link className={headerStyleChange ? "text-dark" : ""} to="./blog">
                 Blog
-            </a>
-            <a
+            </Link>
+            <Link
                 className={headerStyleChange ? "text-dark" : ""}
-                href="./contact"
+                to="./contact"
             >
                 Contact
-            </a>
+            </Link>
 
             {loggedInUser.isSignedIn ? (
                 <div>
@@ -61,7 +61,7 @@ const Header = () => {
                         className={
                             headerStyleChange
                                 ? "text-dark font-weight-bold"
-                                : "font-weight-bold"
+                                : "text-light font-weight-bold"
                         }
                     >
                         {loggedInUser.displayName}

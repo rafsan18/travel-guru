@@ -1,13 +1,11 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import fakeData from "../../fakeData/data";
+import GoogleMap from "../GoogleMap/GoogleMap";
 import Header from "../Header/Header";
 import HotelDetails from "../HotelDetails/HotelDetails";
 
 const Hotel = () => {
-    const { destinationName } = useParams();
-    console.log(destinationName);
-    const history = useHistory();
     const hotelData = fakeData.filter(
         (hotelInfo) => hotelInfo.category === "hotelInfo"
     );
@@ -26,7 +24,9 @@ const Hotel = () => {
                         ))}
                     </div>
                 </div>
-                <div className="col-md-6"></div>
+                <div className="col-md-6">
+                    <GoogleMap></GoogleMap>
+                </div>
             </div>
         </div>
     );
