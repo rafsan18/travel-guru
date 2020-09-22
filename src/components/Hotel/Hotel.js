@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import fakeData from "../../fakeData/data";
 import GoogleMap from "../GoogleMap/GoogleMap";
 import Header from "../Header/Header";
@@ -11,6 +11,10 @@ const Hotel = () => {
     );
 
     const { destinationName } = useParams();
+
+    const destinationData = fakeData.find(
+        (destinationInfo) => destinationInfo.name === destinationName
+    );
     return (
         <div className="container-fluid">
             <Header></Header>
@@ -27,7 +31,7 @@ const Hotel = () => {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <GoogleMap></GoogleMap>
+                    <GoogleMap destinationData={destinationData}></GoogleMap>
                 </div>
             </div>
         </div>
