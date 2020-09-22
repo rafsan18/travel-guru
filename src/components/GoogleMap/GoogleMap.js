@@ -5,7 +5,7 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class GoogleMap extends Component {
     static defaultProps = {
-        zoom: 11,
+        zoom: 13,
     };
 
     render() {
